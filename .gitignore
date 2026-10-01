@@ -1,0 +1,5 @@
+/build/
+/reports/
+/benchmark-data/
+__pycache__/
+*.tmp

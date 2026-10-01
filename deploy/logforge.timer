@@ -1,0 +1,10 @@
+[Unit]
+Description=Analyze logs every five minutes
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=5min
+Unit=logforge.service
+
+[Install]
+WantedBy=timers.target

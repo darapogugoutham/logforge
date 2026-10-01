@@ -1,0 +1,15 @@
+[Unit]
+Description=LogForge scheduled log analysis
+
+[Service]
+Type=oneshot
+User=logforge
+Group=logforge
+WorkingDirectory=/opt/logforge
+ExecStart=/opt/logforge/scripts/run-report.sh /var/log/logforge-input /var/lib/logforge/latest.json 4
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/logforge
+TimeoutStartSec=5min

@@ -1,0 +1,25 @@
+name: C++ and Bash checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and integration tests
+        run: ./scripts/test.sh
+      - name: Bash syntax and lint
+        run: |
+          for script in scripts/*.sh; do bash -n "$script"; done
+          shellcheck scripts/*.sh
+      - name: Address and undefined behavior sanitizers
+        run: |
+          make clean
+          make test CXXFLAGS='-std=c++17 -O1 -g -Wall -Wextra -Werror -fsanitize=address,undefined -fno-omit-frame-pointer'
+  thread-sanitizer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Thread race checks
+        run: make test CXXFLAGS='-std=c++17 -O1 -g -Wall -Wextra -Werror -fsanitize=thread'
